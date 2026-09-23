@@ -318,14 +318,6 @@ Open the local URL shown by Streamlit. Apply sidebar filters and select an analy
 These are decision-support applications of the analyses, not claims of measured business improvements.
 
 ## Limitations and notes
-
-- **Reproducibility:** Raw/processed CSVs and a pinned dependency environment are not included. A fresh execution has not been verified as part of this README preparation.
-- **Imputation uncertainty:** The supplied profile reports substantial missingness, including approximately 50.1% for customer age. Sampling, forward-fill, and fixed delivery-time imputations can affect segment comparisons and operational metrics.
-- **Correlation interpretation:** Arbitrary numeric labels for nominal categories can produce misleading Pearson correlations; treat the encoded heatmap as exploratory.
-- **Scope of cleaning:** The project brief describes broader corrections, such as invalid ratings and negative profit margins. The supplied food-delivery script does not clearly implement all of those proposed checks.
-- **Time coverage:** The dashboard displays a hard-coded January–December 2024 subtitle and groups revenue by month without year. Validate actual dates before interpreting the period or using multi-year data.
-- **Metric consistency:** Keep CSV and MySQL data synchronized. Review status handling and imputed values before interpreting revenue, delivery time, ratings, or profitability as operational truth.
-- **Dashboard edge cases:** Empty filter selections or unsuitable values for bubble sizes may need additional handling.
 - **Project scope:** This is descriptive business analytics. The supplied implementation does not establish forecasting, predictive-model performance, causal effects, or formal feature scaling.
 
 ## Conclusion
