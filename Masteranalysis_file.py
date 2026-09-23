@@ -1,4 +1,5 @@
 import pandas as pd
+from pandas_profiling import ydata_profiling
 from sqlalchemy import create_engine
 import pymysql
 import plotly.express as px
@@ -11,10 +12,15 @@ print("Processing started")
 # ------------------
 # Loading data set
 # ------------------
-df=pd.read_csv('ONLINE_FOOD_DELIVERY_ANALYSIS (1).csv')
+df=pd.read_csv('Raw_dataset.csv')
 df1=df.copy()
 
 print("Data Set loading to dataframe completed")
+# -----------------------------------------
+# Profile report 
+# ------------------------------------------
+profile = ydata_profiling.ProfileReport(df1, title='Data Report')
+profile.to_file('report.html')
 
 # -----------------------------------------
 # Changing data type to respective columns
@@ -216,23 +222,24 @@ df1['Distance_km']=df1['Distance_km'].round(2)
 #Null imputation for Delivery_time_min with respect to distance_km and order status group by distance km
 
 # Condition 1
-condition1 = ((df1['Order_Status'] == 'Delivered') & (df1['Distance_km'].between(1.00, 5.99)) & (df1['Delivery_Time_Min'].isna()))
+condition1 = ((df1['Order_Status'] == 'Delivered') & (df1['Distance_km'].between(1.00, 9.99)) & (df1['Delivery_Time_Min'].isna()))
 df1.loc[condition1, 'Delivery_Time_Min'] = 40
 
 # Condition 2
-condition2 = ((df1['Order_Status'] == 'Delivered') & (df1['Distance_km'].between(6.00, 10.99)) & (df1['Delivery_Time_Min'].isna()))
+condition2 = ((df1['Order_Status'] == 'Delivered') & (df1['Distance_km'].between(10.00, 19.99)) & (df1['Delivery_Time_Min'].isna()))
 df1.loc[condition2, 'Delivery_Time_Min'] = 60
 
 # Condition 3
-condition3 = ((df1['Order_Status'] == 'Delivered') & (df1['Distance_km'].between(11.00, 15.99)) & (df1['Delivery_Time_Min'].isna()))
+condition3 = ((df1['Order_Status'] == 'Delivered') & (df1['Distance_km'].between(20.00, 25.99)) & (df1['Delivery_Time_Min'].isna()))
 df1.loc[condition3, 'Delivery_Time_Min'] = 90
 
 # Condition 4
-condition4 = ((df1['Order_Status'] == 'Delivered') & (df1['Distance_km'].between(16.00, 25.99)) & (df1['Delivery_Time_Min'].isna()))
+condition4 = ((df1['Order_Status'] == 'Delivered') & (df1['Distance_km'].between(26.00, 35.99)) & (df1['Delivery_Time_Min'].isna()))
 df1.loc[condition4, 'Delivery_Time_Min'] = 120
 
-condition4 = ((df1['Order_Status'] == 'Delivered') & (df1['Distance_km'].between(26.00, 40.00)) & (df1['Delivery_Time_Min'].isna()))
-df1.loc[condition4, 'Delivery_Time_Min'] = 150
+# Condition 5
+condition5 = ((df1['Order_Status'] == 'Delivered') & (df1['Distance_km'].between(36.00, 40.00)) & (df1['Delivery_Time_Min'].isna()))
+df1.loc[condition5, 'Delivery_Time_Min'] = 150
 
 
 # Condition 5
@@ -373,20 +380,8 @@ print("Final CSV export completed")
 
 # --- Create database ---
 print("Starting data upload to SQL database...")
-
-try:
-    conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='Mwin@2028')
-    cursor = conn.cursor()
-    cursor.execute("DROP DATABASE IF EXISTS Online_food")
-    cursor.execute("CREATE DATABASE Online_food")
-    cursor.close()
-    conn.close()
-    print("Database EQ1 created successfully, uploading the data from csv to SQL DB...")
-except Exception as e:
-    print(" Error while creating DB:", e)
-
-
+table_name = "ofd"
 engine = create_engine('mysql+pymysql://root:Mwin%402028@127.0.0.1:3306/Online_food')
 df2 = pd.read_csv("FOOD_DELIVERY_ANALYSIS_final.csv")
-df2.to_sql("OFD", engine, if_exists='replace', index=False)
+df2.to_sql(table_name, engine, if_exists='replace', index=False)
 print("Data upload to SQL completed")
