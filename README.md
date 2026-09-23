@@ -33,7 +33,6 @@ Food delivery data contains missing customer details, inconsistent dates, incomp
 | Delivery information | Distance, delivery time, delivery rating, and cancellation reason |
 | Financial information | Order value, discount, final amount, and profit margin |
 
-The source dataset link is recorded in `_ONLINE_FOOD_DELIVERY_ANALYSIS.docx`. The six supplied project files do **not** include the raw or processed CSV. The scripts expect `Raw_dataset.csv` as input and `FOOD_DELIVERY_ANALYSIS_final.csv` as the processed output. These are local runtime data files, not files included in this repository.
 
 ## Technology stack
 
@@ -55,7 +54,7 @@ The implemented dashboard is Streamlit-based. Power BI appears in the project br
 
 ## Data cleaning and preprocessing
 
-`Masteranalysis_file_old.py` contains the food-delivery preprocessing workflow:
+`Masteranalysis_file.py` contains the food-delivery preprocessing workflow:
 
 - Copies the raw DataFrame before transformation.
 - Converts selected fields to categorical and numeric types.
@@ -103,8 +102,6 @@ The food-delivery script applies **specific business-rule caps**, rather than au
 
 The supporting notebook also demonstrates IQR-based age capping on a separate example dataset. That example should not be interpreted as an additional food-delivery transformation.
 
-**Feature scaling with StandardScaler or MinMaxScaler is not implemented.** Category proportions from `value_counts(normalize=True)` and conversion of profit margins into percentages are not feature scaling.
-
 ## Exploratory data analysis
 
 The project combines automated profiling with numerical summaries, category frequencies, grouped comparisons, and interactive charts:
@@ -115,7 +112,7 @@ The project combines automated profiling with numerical summaries, category freq
 - **Time-based analysis:** monthly revenue, weekday/weekend patterns, and peak-hour demand.
 - **Operational analysis:** cancellations, cancellation reasons, and delivery performance.
 
-`report.html` provides the supplied food-delivery data profile. `EDA_GANGA.ipynb` is broader EDA reference material containing HR-data examples, notebook installation commands, and Colab-specific paths; it is not the food-delivery pipeline entry point.
+`report.html` provides the supplied food-delivery data profile. 
 
 ## Feature engineering
 
@@ -205,21 +202,17 @@ The supplied files, plus this README, are:
 ```text
 .
 ├── README.md
-├── EDA_GANGA.ipynb
 ├── app_dashboard.py
-├── Masteranalysis_file_old.py
+├── Masteranalysis_file.py
 ├── output .docx
-├── _ONLINE_FOOD_DELIVERY_ANALYSIS.docx
 └── report.html
 ```
 
 | File | Purpose |
 |---|---|
-| `EDA_GANGA.ipynb` | General EDA notes and illustrative notebook exercises |
 | `app_dashboard.py` | Streamlit application, KPI calculations, Plotly charts, and SQL queries |
 | `Masteranalysis_file_old.py` | Food-delivery preprocessing, feature engineering, CSV export, and MySQL upload |
 | `output .docx` | Dashboard and analysis output documentation |
-| `_ONLINE_FOOD_DELIVERY_ANALYSIS.docx` | Project brief, dataset description, objectives, and analytical tasks |
 | `report.html` | Generated food-delivery profiling report |
 
 ## How to run
