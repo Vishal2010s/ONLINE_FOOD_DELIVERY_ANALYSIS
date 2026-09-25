@@ -381,7 +381,7 @@ print("Final CSV export completed")
 # --- Create database ---
 print("Starting data upload to SQL database...")
 table_name = "ofd"
-engine = create_engine('mysql+pymysql://root:Mwin%402028@127.0.0.1:3306/Online_food')
+engine = create_engine('mysql+pymysql://root:("YOur_Password)"@127.0.0.1:3306/Online_food')
 df2 = pd.read_csv("FOOD_DELIVERY_ANALYSIS_final.csv")
 df2.to_sql(table_name, engine, if_exists='replace', index=False)
 print("Data upload to SQL completed")
