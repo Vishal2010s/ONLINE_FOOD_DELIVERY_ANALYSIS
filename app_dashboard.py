@@ -7,6 +7,7 @@ import numpy as np
 from sqlalchemy import create_engine, text
 from sqlalchemy import create_engine, event
 from sqlalchemy.pool import StaticPool
+from pathlib import Path
 
 
 # engine = create_engine('mysql+pymysql://root:Mwin%402028@127.0.0.1:3306/Online_food')
