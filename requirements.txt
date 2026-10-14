@@ -1,0 +1,9 @@
+pandas
+SQLAlchemy
+PyMySQL
+plotly
+matplotlib
+scikit-learn
+numpy
+streamlit
+python-dotenv
