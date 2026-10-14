@@ -5,9 +5,11 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import numpy as np
 from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, event
+from sqlalchemy.pool import StaticPool
 
 
-engine = create_engine('mysql+pymysql://root:("YOur_Password)"@127.0.0.1:3306/Online_food')
+# engine = create_engine('mysql+pymysql://root:Mwin%402028@127.0.0.1:3306/Online_food')
 st.set_page_config(
     page_title="Food Delivery Analytics Dashboard",
     page_icon="🍔",
@@ -45,11 +47,41 @@ st.markdown("""
     .stTabs [aria-selected="true"] {background-color: #FF6B35 !important;color: black !important;}
 </style>
 """, unsafe_allow_html=True)
+
+# Load CSV using the correct repository path
+BASE_DIR = Path(__file__).resolve().parent
+
 @st.cache_data
 def load_data():
-    df = pd.read_csv('FOOD_DELIVERY_ANALYSIS_final.csv')
-    return df
+    return pd.read_csv(
+        BASE_DIR / "FOOD_DELIVERY_ANALYSIS_final.csv"
+    )
+
 df = load_data()
+
+
+engine = create_engine(
+    "sqlite://",
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool,
+)
+
+@event.listens_for(engine, "connect")
+def register_sqlite_functions(dbapi_connection, connection_record):
+    def field_order(value, *choices):
+        try:
+            return choices.index(value) + 1
+        except ValueError:
+            return len(choices) + 1
+
+    dbapi_connection.create_function("FIELD", -1, field_order)
+
+df.to_sql(
+    "ofd",
+    con=engine,
+    if_exists="replace",
+    index=False,
+)
 # ============ SIDEBAR FILTERS ============
 st.sidebar.markdown("## Filters")
 # City filter
